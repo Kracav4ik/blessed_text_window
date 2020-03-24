@@ -8,14 +8,6 @@
 
 class InputManager : public Singleton<InputManager> {
 SINGLETON_CTOR(InputManager)
-
-private:
-    Point _mouse_pos;
-    bool _left_pressed = false;
-    bool _right_pressed = false;
-    std::unordered_map<char, std::function<void()>> _key_states;
-    bool _key_state[256] = {false};
-
 public:
     void init();
     void check_input();
@@ -25,4 +17,11 @@ public:
     bool is_left_pressed() const;
     bool is_right_pressed() const;
     bool is_key_pressed(char key) const;
+
+private:
+    Point _mouse_pos;
+    bool _left_pressed = false;
+    bool _right_pressed = false;
+    std::unordered_map<char, std::function<void()>> _key_states;
+    bool _key_pressed[256] = {false};
 };

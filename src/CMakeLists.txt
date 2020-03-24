@@ -15,6 +15,8 @@ set(EXE_SOURCES
         Person.h
         utils.h
         GameObject.cpp ObjectManager.hpp ObjectManager.h
+        Enemy.cpp
+        Enemy.h
 )
 
 add_executable(${EXE_NAME} ${EXE_SOURCES})

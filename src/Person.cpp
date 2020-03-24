@@ -1,52 +1,55 @@
 #include "Person.h"
 
 #include "InputManager.h"
+#include "GameManager.h"
 
 #include <curses.h>
+#include <cmath>
 
 void Person::process(float elapsed) {
+    mvaddch(0, 100, '>');
+    wprintw(stdscr, "                                                                                                      ");
+    mvaddch(0, 100, '>');
+    wprintw(stdscr, "elapsed %f spd %f %f pos %f %f", elapsed, _velocity.x(), _velocity.y(), _pos.x(), _pos.y());
+
+    mvaddch(1, 100, '>');
+    wprintw(stdscr, "                                                                                                      ");
+    mvaddch(1, 100, '>');
     float vel_val = 18;
+    int x_vel = 0;
+    int y_vel = 0;
     if (InputManager::get().is_key_pressed('W')) {
-        _velocity.set_y(-vel_val);
-    } else if (InputManager::get().is_key_pressed('S')) {
-        _velocity.set_y(vel_val);
-    } else {
-        _velocity.set_y(0);
+        wprintw(stdscr, "W");
+        y_vel -= vel_val;
+    }
+    if (InputManager::get().is_key_pressed('S')) {
+        wprintw(stdscr, "S");
+        y_vel += vel_val;
     }
     if (InputManager::get().is_key_pressed('A')) {
-        _velocity.set_x(-vel_val);
-    } else if (InputManager::get().is_key_pressed('D')) {
-        _velocity.set_x(vel_val);
+        wprintw(stdscr, "A");
+        x_vel -= vel_val;
+    }
+    if (InputManager::get().is_key_pressed('D')) {
+        wprintw(stdscr, "D");
+        x_vel += vel_val;
+    }
+    _velocity.set_x(x_vel);
+    _velocity.set_y(y_vel);
+
+    const Point& new_pos = _pos + elapsed * _velocity;
+
+    if (GameManager::get().can_pass(new_pos)) {
+        _old_pos = _pos;
+        _pos += elapsed * _velocity;
     } else {
         _velocity.set_x(0);
+        _velocity.set_y(0);
     }
-    _pos += elapsed * _velocity;
-}
-
-const Point& Person::pos() const {
-    return _pos;
-}
-
-Point& Person::pos() {
-    return _pos;
-}
-
-void Person::set_pos(const Point& pos) {
-    _pos = pos;
-}
-
-const Point& Person::velocity() const {
-    return _velocity;
-}
-
-Point& Person::velocity() {
-    return _velocity;
-}
-
-void Person::set_velocity(const Point& velocity) {
-    _velocity = velocity;
+    fix_pos();
 }
 
 void Person::render() {
-    mvaddch(pos().y(), pos().x(), '@');
+    mvaddch(grid_round(_old_pos.y()), grid_round(_old_pos.x()), '.'); // TODO: fix
+    mvaddch(grid_round(pos().y()), grid_round(pos().x()), '@');
 }

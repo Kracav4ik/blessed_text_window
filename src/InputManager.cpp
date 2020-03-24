@@ -1,5 +1,8 @@
 #include "InputManager.h"
 
+#include <iostream>
+#include <fstream>
+
 #include <curses.h>
 #include <windows.h>
 #include <wincon/pdcwin.h>
@@ -11,6 +14,8 @@ void InputManager::init() {
 }
 
 void InputManager::check_input() {
+    static std::ofstream o("cc.txt");
+
     DWORD count;
     GetNumberOfConsoleInputEvents(pdc_con_in, &count);
 
@@ -18,13 +23,20 @@ void InputManager::check_input() {
         DWORD unused;
         INPUT_RECORD ir;
         ReadConsoleInput(pdc_con_in, &ir, 1, &unused);
+        mvaddch(2, 100, '>');
+        wprintw(stdscr, "                                                                                                      ");
+        mvaddch(2, 100, '>');
+        wprintw(stdscr, "ir.EventType %d ", int(ir.EventType));
 
         if (ir.EventType == KEY_EVENT) {
+            // fuck this shit
             const auto& e = ir.Event.KeyEvent;
-            _key_state[e.wVirtualKeyCode] = e.bKeyDown;
+            _key_pressed[e.wVirtualKeyCode] = e.bKeyDown;
             if (e.bKeyDown && _key_states.count(e.wVirtualKeyCode) != 0) {
                 _key_states[e.wVirtualKeyCode]();
             }
+            wprintw(stdscr, "e.wVirtualKeyCode %d e.bKeyDown %d e.wRepeatCount %d e.dwControlKeyState %x", int(e.wVirtualKeyCode), int(e.bKeyDown), int(e.wRepeatCount), int(e.dwControlKeyState));
+//            o << "e.wVirtualKeyCode " << int(e.wVirtualKeyCode) << " e.bKeyDown " << int(e.bKeyDown) << " e.wRepeatCount " << int(e.wRepeatCount) << " e.dwControlKeyState" << int(e.dwControlKeyState) << std::endl;
         } else if (ir.EventType == MOUSE_EVENT) {
             const auto& e = ir.Event.MouseEvent;
             _mouse_pos.set_x(e.dwMousePosition.X);
@@ -45,7 +57,7 @@ void InputManager::check_input() {
         }
     }
 
-    getch();
+    //wgetch(stdscr);
 }
 
 void InputManager::add_action(char key, std::function<void()> f) {
@@ -65,5 +77,5 @@ bool InputManager::is_right_pressed() const {
 }
 
 bool InputManager::is_key_pressed(char key) const {
-    return _key_state[key];
+    return _key_pressed[key];
 }

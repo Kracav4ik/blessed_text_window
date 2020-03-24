@@ -9,4 +9,10 @@ SINGLETON_CTOR(RenderManager)
 public:
     void init();
     void render();
+    void danger();
+    void restore();
+
+private:
+    // background character
+    char bg = '.';
 };
