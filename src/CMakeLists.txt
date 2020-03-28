@@ -1,22 +1,27 @@
 set(EXE_NAME blessed_text_window)
 
 set(EXE_SOURCES
+        Enemy.cpp
+        Enemy.h
         GameManager.cpp
         GameManager.h
+        GameObject.cpp
+        GameObject.h
         InputManager.cpp
         InputManager.h
         main.cpp
-        Renderable.h
+        ObjectManager.h
+        ObjectManager.hpp
+        Person.cpp
+        Person.h
         Renderable.cpp
+        Renderable.h
         RenderManager.cpp
         RenderManager.h
         Singleton.h
-        Person.cpp
-        Person.h
+        utils.cpp
         utils.h
-        GameObject.cpp ObjectManager.hpp ObjectManager.h
-        Enemy.cpp
-        Enemy.h
+        utils.hpp
 )
 
 add_executable(${EXE_NAME} ${EXE_SOURCES})

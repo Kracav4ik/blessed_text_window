@@ -1,12 +1,18 @@
 #include "GameManager.h"
 #include "InputManager.h"
 #include "RenderManager.h"
+#include "Person.h"
 #include "Enemy.h"
+#include "utils.hpp"
 
 #include <cmath>
 #include <chrono>
+#include <curses.h>
 
 using namespace std::chrono;
+
+GameManager::GameManager() = default;
+GameManager::~GameManager() = default;
 
 void GameManager::init() {
     _person = std::make_unique<Person>();
@@ -32,7 +38,7 @@ void GameManager::process() {
     }
     int min_distance = 10;
     for (const auto& object : _objects) {
-        int distance = grid_round(dist2(_person->pos(), object->pos()));
+        int distance = dist2(_person->grid_pos(), object->grid_pos());
         if (distance != 0 && distance < min_distance) {
             min_distance = distance;
         }
@@ -45,14 +51,14 @@ void GameManager::process() {
     }
 }
 
-Point GameManager::player_pos() {
-    return _person->pos();
+PointI GameManager::player_pos() {
+    return _person->grid_pos();
 }
 
-bool GameManager::can_pass(const Point& p) const {
+bool GameManager::can_pass(const PointI& p) const {
     for (const auto& object : _objects) {
-        int distance = grid_round(dist2(p, object->pos()));
-        if (distance == 0) {
+        int distance = dist2(p, object->grid_pos());
+        if (distance == 0 || p.x() < 0 || p.y() < 0 || p.x() >= COLS || p.y() >= LINES) {
             return false;
         }
     }
@@ -61,11 +67,6 @@ bool GameManager::can_pass(const Point& p) const {
 }
 
 void GameManager::generate_enemy() {
-    auto* enemy = new Enemy;
-    enemy->set_pos(Point::random());
-    enemy->fix_pos();
-    while (can_pass(enemy->pos())) {
-        enemy->set_pos(Point::random());
-        enemy->fix_pos();
-    }
+    _enemies.push_back(std::make_unique<Enemy>());
+    _enemies.back()->set_grid_pos(PointI(rand() % COLS, rand() % LINES));
 }

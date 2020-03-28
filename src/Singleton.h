@@ -17,3 +17,8 @@ private:                                    \
     CLS() = default;                        \
     friend class Singleton<CLS>;
 
+#define SINGLETON_CTOR_DECL(CLS)            \
+private:                                    \
+    CLS();                                  \
+    friend class Singleton<CLS>;
+

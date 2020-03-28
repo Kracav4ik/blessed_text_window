@@ -1,5 +1,7 @@
 #include "InputManager.h"
 
+#include "utils.hpp"
+
 #include <iostream>
 #include <fstream>
 
@@ -39,8 +41,7 @@ void InputManager::check_input() {
 //            o << "e.wVirtualKeyCode " << int(e.wVirtualKeyCode) << " e.bKeyDown " << int(e.bKeyDown) << " e.wRepeatCount " << int(e.wRepeatCount) << " e.dwControlKeyState" << int(e.dwControlKeyState) << std::endl;
         } else if (ir.EventType == MOUSE_EVENT) {
             const auto& e = ir.Event.MouseEvent;
-            _mouse_pos.set_x(e.dwMousePosition.X);
-            _mouse_pos.set_y(e.dwMousePosition.Y);
+            _mouse_pos = PointI(e.dwMousePosition.X, e.dwMousePosition.Y);
 
             _left_pressed = false;
             _right_pressed = false;
@@ -64,7 +65,7 @@ void InputManager::add_action(char key, std::function<void()> f) {
     _key_states[key] = std::move(f);
 }
 
-Point InputManager::mouse_pos() const {
+PointI InputManager::mouse_pos() const {
     return _mouse_pos;
 }
 

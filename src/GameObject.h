@@ -5,25 +5,28 @@
 class GameObject {
 public:
     GameObject();
-    GameObject(const Point& pos);
+    explicit GameObject(const PointI& grid_pos);
 
-    virtual void process(float elapsed) = 0;
+    virtual void process(float elapsed);
 
-    virtual const Point& pos() const;
-    virtual Point& pos();
-    virtual void set_pos(const Point& pos);
+    virtual const PointF& pos() const;
+    virtual void set_pos(const PointF& pos);
 
-    virtual const Point& velocity() const;
-    virtual Point& velocity();
-    virtual void set_velocity(const Point& velocity);
-    void fix_pos();
+    virtual const PointI& grid_pos() const;
+    virtual void set_grid_pos(const PointI& pos);
+
+    virtual const PointF& velocity() const;
+    virtual void set_velocity(const PointF& velocity);
 
     virtual ~GameObject();
+
 protected:
-    Point _old_pos;
-    Point _pos;
-    Point _velocity;
+    PointF _pos;
+    PointF _velocity;
+
+    PointI _grid_pos;
+    PointI _old_grid_pos;
 
 private:
-    void init();
+    void install();
 };

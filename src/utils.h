@@ -1,84 +1,76 @@
 #pragma once
 
-#include <cstdlib>
-#include <cmath>
 
+template <typename T>
 class Point {
 public:
     Point() = default;
 
-    static Point random() { return Point(rand(), rand()); }
+    Point(T x, T y);
 
-    Point(float x, float y) : _x(x), _y(y) {}
-    float x() const { return _x; }
-    float y() const { return _y; }
+    template <typename U>
+    explicit Point(const Point<U>& p);
 
-    void set_x(float x) { _x = x; }
-    void set_y(float y) { _y = y; }
+    T x() const;
+    T y() const;
 
-    void move_x(float dx) { _x += dx; }
-    void move_y(float dy) { _y += dy; }
+    void set_x(T x);
+    void set_y(T y);
 
-    void scale_x(float dx) { _x *= dx; }
-    void scale_y(float dy) { _y *= dy; }
+    void move_x(T dx);
+    void move_y(T dy);
 
-    Point& operator+=(const Point& other) {
-        move_x(other.x());
-        move_y(other.y());
-        return *this;
-    }
+    void scale_x(T dx);
+    void scale_y(T dy);
 
-    Point& operator-() {
-        operator*=(-1);
-        return *this;
-    }
+    Point<T> operator-() const;
 
-    Point& operator*=(float other) {
-        scale_x(other);
-        scale_y(other);
-        return *this;
-    }
+    Point<T>& operator+=(const Point<T>& other);
+    Point<T>& operator-=(const Point<T>& other);
 
-    Point& operator-=(Point other) {
-        operator+=(-other);
-        return *this;
-    }
-    float dist2() {
-        return _x * _x + _y* _y;
-    }
+    Point<T>& operator*=(T other);
+    Point<T>& operator/=(T other);
+
+    bool is_zero() const;
+
+    T len2() const;
+    T len() const;
+    Point<T> norm() const;
 
 private:
-    float _x = 0;
-    float _y = 0;
+    T _x = 0;
+    T _y = 0;
 };
 
-inline Point operator*(float other, Point point) {
-    point *= other;
-    return point;
+using PointF = Point<float>;
+using PointI = Point<int>;
+
+template <typename T>
+bool operator==(const Point<T>& p1, const Point<T>& p2);
+
+template <typename T>
+inline bool operator!=(const Point<T>& p1, const Point<T>& p2) {
+    return !(p1 == p2);
 }
 
-inline Point operator*(const Point& point, float other) {
-    return other * point;
-}
+template <typename T>
+Point<T> operator*(T other, Point<T> point);
 
-inline Point operator+(Point p1, const Point& p2) {
-    p1 += p2;
-    return p1;
-}
+template <typename T>
+Point<T> operator*(const Point<T>& point, T other);
 
-inline Point operator-(Point p1, const Point& p2) {
-    p1 -= p2;
-    return p1;
-}
+template <typename T>
+Point<T> operator/(Point<T> point, T other);
 
-inline float dist2(const Point& p1, const Point& p2) {
-    return (p1 - p2).dist2();
-}
+template <typename T>
+Point<T> operator+(Point<T> p1, const Point<T>& p2);
 
-inline int grid_round(float n) {
-    int dec = int(floorf(n * 10)) % 10;
-    if (dec < 5) {
-        return int(floorf(n));
-    }
-    return int(ceilf(n));
-}
+template <typename T>
+Point<T> operator-(Point<T> p1, const Point<T>& p2);
+
+template <typename T>
+T dist2(const Point<T>& p1, const Point<T>& p2);
+
+int grid_round(float n);
+
+PointI grid_round(const PointF& p);
