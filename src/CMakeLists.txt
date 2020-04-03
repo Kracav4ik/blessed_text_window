@@ -10,6 +10,8 @@ set(EXE_SOURCES
         InputManager.cpp
         InputManager.h
         main.cpp
+        Missile.cpp
+        Missile.h
         ObjectManager.h
         ObjectManager.hpp
         Person.cpp

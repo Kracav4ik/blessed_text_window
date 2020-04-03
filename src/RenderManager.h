@@ -9,10 +9,15 @@ SINGLETON_CTOR(RenderManager)
 public:
     void init();
     void render();
-    void danger();
     void restore();
+    void danger();
+
+    bool is_danger_theme() const;
 
 private:
     // background character
-    char bg = '.';
+    char bg_sing = '.';
+    void clear();
+
+    bool _is_danger_theme = false;
 };

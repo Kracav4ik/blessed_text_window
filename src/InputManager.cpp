@@ -47,8 +47,6 @@ void InputManager::check_input() {
             _right_pressed = false;
             if ((e.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED) != 0) {
                 _left_pressed = true;
-                mvaddch(_mouse_pos.y(), _mouse_pos.x(), '*');
-                wprintw(stdscr, "Position: Y: %d X: %d", (int)_mouse_pos.y(), (int)_mouse_pos.x());
             }
             if ((e.dwButtonState & RIGHTMOST_BUTTON_PRESSED) != 0) {
                 _right_pressed = true;

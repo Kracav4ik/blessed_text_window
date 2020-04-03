@@ -9,3 +9,7 @@ Renderable::Renderable() {
 Renderable::~Renderable() {
     RenderManager::get().remove_object(this);
 }
+
+bool Renderable::is_danger_theme() const {
+    return RenderManager::get().is_danger_theme();
+}

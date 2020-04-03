@@ -10,7 +10,7 @@ GameObject::GameObject() {
     install();
 }
 
-GameObject::GameObject(const PointI& grid_pos): _pos(grid_pos), _grid_pos(grid_pos), _old_grid_pos(grid_pos) {
+GameObject::GameObject(const PointI& grid_pos): _pos(grid_pos), _grid_pos(grid_pos) {
     install();
 }
 
@@ -55,7 +55,6 @@ void GameObject::process(float elapsed) {
     if (new_grid_pos != grid_pos() && !GameManager::get().can_pass(new_grid_pos)) {
         return;
     }
-    _old_grid_pos = grid_pos();
     set_pos(new_pos);
 }
 

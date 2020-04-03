@@ -1,6 +1,7 @@
 #include "Person.h"
 
 #include "InputManager.h"
+#include "GameManager.h"
 #include "utils.hpp"
 
 #include <curses.h>
@@ -23,10 +24,17 @@ void Person::process(float elapsed) {
     }
     _velocity = PointF(x_vel, y_vel).norm() * vel_val;
 
+    if (InputManager::get().is_left_pressed()) {
+        GameManager::get().launch_missile(InputManager::get().mouse_pos());
+    }
+
     GameObject::process(elapsed);
 }
 
 void Person::render() {
-    mvaddch(grid_round(_old_grid_pos.y()), grid_round(_old_grid_pos.x()), '.'); // TODO: fix
-    mvaddch(grid_round(pos().y()), grid_round(pos().x()), '@');
+    auto theme = COLOR_PAIR(100);
+    if (is_danger_theme()) {
+        theme = COLOR_PAIR(200);
+    }
+    mvaddch(grid_round(pos().y()), grid_round(pos().x()), '@' | theme);
 }

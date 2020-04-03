@@ -13,6 +13,9 @@ void Enemy::process(float elapsed) {
 }
 
 void Enemy::render() {
-    mvaddch(_old_grid_pos.y(), _old_grid_pos.x(), '.'); // TODO: fix
-    mvaddch(grid_pos().y(), grid_pos().x(), 'g' | COLOR_PAIR(2));
+    auto theme = COLOR_PAIR(101);
+    if (is_danger_theme()) {
+        theme = COLOR_PAIR(201);
+    }
+    mvaddch(grid_pos().y(), grid_pos().x(), 'g' | theme);
 }

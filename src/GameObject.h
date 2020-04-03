@@ -25,7 +25,6 @@ protected:
     PointF _velocity;
 
     PointI _grid_pos;
-    PointI _old_grid_pos;
 
 private:
     void install();

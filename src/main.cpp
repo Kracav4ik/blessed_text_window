@@ -14,6 +14,7 @@ int main() {
         InputManager::get().check_input();
         GameManager::get().process();
         RenderManager::get().render();
+        GameManager::get().delete_objects();
         napms(50);
     }
 }
