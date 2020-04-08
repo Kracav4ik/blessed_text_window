@@ -97,19 +97,19 @@ bool operator==(const Point<T>& p1, const Point<T>& p2) {
     return p1.x() == p2.x() && p1.y() == p2.y();
 }
 
-template <typename T>
-Point<T> operator*(T other, Point<T> point) {
+template <typename T, typename U>
+Point<T> operator*(U other, Point<T> point) {
     point *= other;
     return point;
 }
 
-template <typename T>
-Point<T> operator*(const Point<T>& point, T other) {
+template <typename T, typename U>
+Point<T> operator*(const Point<T>& point, U other) {
     return other * point;
 }
 
-template <typename T>
-Point<T> operator/(Point<T> point, T other) {
+template <typename T, typename U>
+Point<T> operator/(Point<T> point, U other) {
     point /= other;
     return point;
 }

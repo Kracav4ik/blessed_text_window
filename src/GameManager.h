@@ -6,6 +6,7 @@
 
 #include <chrono>
 #include <memory>
+#include <unordered_set>
 
 class GameObject;
 class Person;
@@ -25,7 +26,7 @@ public:
     void delete_objects();
 
     PointI player_pos();
-    bool can_pass(const PointI& p) const;
+    bool can_pass(const PointI& p, std::unordered_set<GameObject*> ignore = {}) const;
     void kill(const Missile& missile, const PointI& target);
     void launch_missile(const PointI& target);
 

@@ -69,8 +69,11 @@ PointI GameManager::player_pos() {
     return _person->grid_pos();
 }
 
-bool GameManager::can_pass(const PointI& p) const {
+bool GameManager::can_pass(const PointI& p, std::unordered_set<GameObject*> ignore) const {
     for (const auto& object : get_objects()) {
+        if (ignore.count(object) != 0) {
+            continue;
+        }
         int distance = dist2(p, object->grid_pos());
         if (distance == 0 || p.x() < 0 || p.y() < 0 || p.x() >= COLS || p.y() >= LINES) {
             return false;

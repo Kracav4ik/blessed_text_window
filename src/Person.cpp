@@ -6,6 +6,8 @@
 
 #include <curses.h>
 
+static const float SHOT_DELAY = 0.3;
+
 void Person::process(float elapsed) {
     float vel_val = 18;
     float x_vel = 0;
@@ -24,8 +26,10 @@ void Person::process(float elapsed) {
     }
     _velocity = PointF(x_vel, y_vel).norm() * vel_val;
 
-    if (InputManager::get().is_left_pressed()) {
+    _shot_elapsed += elapsed;
+    if (InputManager::get().is_left_pressed() && _shot_elapsed >= SHOT_DELAY) {
         GameManager::get().launch_missile(InputManager::get().mouse_pos());
+        _shot_elapsed = 0;
     }
 
     GameObject::process(elapsed);
