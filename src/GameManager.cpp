@@ -17,6 +17,7 @@ GameManager::~GameManager() = default;
 
 void GameManager::init() {
     _person = std::make_unique<Person>();
+    _person->set_grid_pos(PointI(COLS / 2, LINES / 2));
 
     InputManager::get().add_action('Q', [this]() {
         _running = false;
