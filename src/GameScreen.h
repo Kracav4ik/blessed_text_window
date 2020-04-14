@@ -25,6 +25,7 @@ public:
     PointI player_pos();
     bool can_pass(const PointI& p, std::unordered_set<GameObject*> ignore = {}) const;
     void kill(const Missile& missile, const PointI& target);
+    void damage_player(float damage);
     void launch_missile(const PointI& target);
 
 private:

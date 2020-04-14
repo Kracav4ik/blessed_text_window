@@ -10,8 +10,10 @@ public:
     void process(float elapsed) override;
     void render() const override;
     float damage() const;
+    bool can_act() const;
 
 private:
+    float _hit_elapsed = 0;
     float _damage;
     char _type;
 };

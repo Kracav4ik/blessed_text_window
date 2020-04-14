@@ -12,10 +12,12 @@ public:
     void render() const override;
 
     void take_damage(float damage);
+    bool was_damaged() const;
 
     bool is_alive() const;
 
 private:
     float _shot_elapsed = 0;
     float _heal_points = 100;
+    bool _was_damaged = false;
 };

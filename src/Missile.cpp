@@ -1,6 +1,7 @@
 #include "Missile.h"
 
 #include "GameScreen.h"
+#include "Person.h"
 #include "utils.hpp"
 
 #include <curses.h>
@@ -8,16 +9,30 @@
 
 static const float MISSILE_SPEED = 70;
 
+std::vector<PointI> generate_deltas(PointF from, PointF to);
+
 void Missile::process(float elapsed) {
     auto new_pos = pos() + elapsed * velocity();
-    auto new_grid_pos = grid_round(new_pos);
 
-    bool collided = !_game.can_pass(new_grid_pos, {this});
+    auto check_pos = grid_pos();
+    auto deltas = generate_deltas(pos(), new_pos);
+    int count = 0;
+    for (PointI delta : deltas) {
+        check_pos += delta;
+        count += 1;
+        if (check_pos == _game.player_pos()) {
+            continue;  // TODO: use game object tags to check collision with
+        }
+        bool collided = !_game.can_pass(check_pos, {this});
+        if (collided) {
+            _game.kill(*this, check_pos);
+            new_pos = pos() + elapsed * count / deltas.size() * velocity();
+            break;
+        }
+    }
+
     set_pos(new_pos);
     processed = true;
-    if (collided) {
-        _game.kill(*this, new_grid_pos);
-    }
 }
 
 std::vector<PointI> generate_deltas(PointF from, PointF to) {

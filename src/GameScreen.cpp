@@ -22,17 +22,7 @@ void GameScreen::process(float elapsed) {
         object->process(elapsed);
     }
 
-    bool damaged = false;
-
-    for (const auto& enemy : _enemies) {
-        int distance = dist2(_person->grid_pos(), enemy->grid_pos());
-        if (distance < 3) {
-            damaged = true;
-            _person->take_damage(enemy->damage());
-        }
-    }
-
-    if (damaged) {
+    if (_person->was_damaged()) {
         RenderManager::get().danger();
     } else {
         RenderManager::get().restore();
@@ -101,6 +91,10 @@ void GameScreen::kill(const Missile& missile, const PointI& target) {
             break;
         }
     }
+}
+
+void GameScreen::damage_player(float damage) {
+    _person->take_damage(damage);
 }
 
 void GameScreen::launch_missile(const PointI& target) {

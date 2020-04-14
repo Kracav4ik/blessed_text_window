@@ -27,10 +27,12 @@ void RenderManager::init() {
     init_pair(100, COLOR_WHITE, COLOR_BLACK); // default
     init_pair(101, COLOR_GREEN, COLOR_BLACK); // enemies default
     init_pair(102, COLOR_BRIGHT | COLOR_YELLOW, COLOR_BLACK); // missiles default
+    init_pair(103, COLOR_BRIGHT | COLOR_WHITE, COLOR_BLACK); // player default
 
     init_pair(200, COLOR_BLACK, COLOR_RED); // danger theme
     init_pair(201, COLOR_GREEN, COLOR_RED); // enemies danger
     init_pair(202, COLOR_BRIGHT | COLOR_YELLOW, COLOR_RED); // missiles danger
+    init_pair(203, COLOR_BRIGHT | COLOR_WHITE, COLOR_RED); // player danger
     restore();
 }
 
