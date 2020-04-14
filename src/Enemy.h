@@ -5,7 +5,13 @@
 
 class Enemy : public GameObject, public Renderable {
 public:
-    void process(float elapsed) override;
+    Enemy(GameScreen& game_screen, float damage, char type);
 
-    void render() override;
+    void process(float elapsed) override;
+    void render() const override;
+    float damage() const;
+
+private:
+    float _damage;
+    char _type;
 };

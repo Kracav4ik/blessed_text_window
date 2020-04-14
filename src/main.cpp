@@ -1,4 +1,5 @@
 #include "InputManager.h"
+#include "ScreenManager.h"
 #include "RenderManager.h"
 #include "GameManager.h"
 
@@ -7,6 +8,7 @@
 
 int main() {
     RenderManager::get().init();
+    ScreenManager::get().init();
     InputManager::get().init();
     GameManager::get().init();
 
@@ -14,7 +16,6 @@ int main() {
         InputManager::get().check_input();
         GameManager::get().process();
         RenderManager::get().render();
-        GameManager::get().delete_objects();
         napms(50);
     }
 }

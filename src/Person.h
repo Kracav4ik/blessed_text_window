@@ -5,12 +5,17 @@
 
 class Person : public GameObject, public Renderable {
 public:
-    Person() = default;
+    explicit Person(GameScreen& game_screen);
 
     void process(float elapsed) override;
 
-    void render() override;
+    void render() const override;
+
+    void take_damage(float damage);
+
+    bool is_alive() const;
 
 private:
     float _shot_elapsed = 0;
+    float _heal_points = 100;
 };

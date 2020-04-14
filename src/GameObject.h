@@ -2,10 +2,12 @@
 
 #include "utils.h"
 
+class GameScreen;
+
 class GameObject {
 public:
-    GameObject();
-    explicit GameObject(const PointI& grid_pos);
+    explicit GameObject(GameScreen& game);
+    GameObject(const PointI& grid_pos, GameScreen& game);
 
     virtual void process(float elapsed);
 
@@ -21,11 +23,13 @@ public:
     virtual ~GameObject();
 
 protected:
+    GameScreen& _game;
+
+private:
+    void install();
+
     PointF _pos;
     PointF _velocity;
 
     PointI _grid_pos;
-
-private:
-    void install();
 };

@@ -7,6 +7,10 @@ set(EXE_SOURCES
         GameManager.h
         GameObject.cpp
         GameObject.h
+        GameOverScreen.cpp
+        GameOverScreen.h
+        GameScreen.cpp
+        GameScreen.h
         InputManager.cpp
         InputManager.h
         main.cpp
@@ -20,6 +24,10 @@ set(EXE_SOURCES
         Renderable.h
         RenderManager.cpp
         RenderManager.h
+        Screen.cpp
+        Screen.h
+        ScreenManager.cpp
+        ScreenManager.h
         Singleton.h
         utils.cpp
         utils.h

@@ -1,16 +1,14 @@
 #include "GameObject.h"
 
-#include "GameManager.h"
+#include "GameScreen.h"
 #include "ObjectManager.hpp"
 #include "utils.hpp"
 
-#include <curses.h>
-
-GameObject::GameObject() {
+GameObject::GameObject(GameScreen& game) : _game(game) {
     install();
 }
 
-GameObject::GameObject(const PointI& grid_pos): _pos(grid_pos), _grid_pos(grid_pos) {
+GameObject::GameObject(const PointI& grid_pos, GameScreen& game): _pos(grid_pos), _grid_pos(grid_pos), _game(game) {
     install();
 }
 
@@ -41,18 +39,18 @@ void GameObject::set_velocity(const PointF& velocity) {
 }
 
 GameObject::~GameObject() {
-    GameManager::get().remove_object(this);
+    _game.remove_game_object(this);
 }
 
 void GameObject::install() {
-    GameManager::get().add_object(this);
+    _game.add_game_object(this);
 }
 
 void GameObject::process(float elapsed) {
     auto new_pos = pos() + elapsed * velocity();
     auto new_grid_pos = grid_round(new_pos);
 
-    if (new_grid_pos != grid_pos() && !GameManager::get().can_pass(new_grid_pos)) {
+    if (new_grid_pos != grid_pos() && !_game.can_pass(new_grid_pos)) {
         return;
     }
     set_pos(new_pos);

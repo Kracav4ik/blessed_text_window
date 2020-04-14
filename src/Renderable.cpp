@@ -1,13 +1,14 @@
 #include "Renderable.h"
 #include "RenderManager.h"
+#include "Screen.h"
 #include "ObjectManager.hpp"
 
-Renderable::Renderable() {
-    RenderManager::get().add_object(this);
+Renderable::Renderable(Screen& screen): _screen(screen) {
+    _screen.add_renderable(this);
 }
 
 Renderable::~Renderable() {
-    RenderManager::get().remove_object(this);
+    _screen.remove_renderable(this);
 }
 
 bool Renderable::is_danger_theme() const {

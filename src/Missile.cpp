@@ -1,6 +1,6 @@
 #include "Missile.h"
 
-#include "GameManager.h"
+#include "GameScreen.h"
 #include "utils.hpp"
 
 #include <curses.h>
@@ -12,11 +12,11 @@ void Missile::process(float elapsed) {
     auto new_pos = pos() + elapsed * velocity();
     auto new_grid_pos = grid_round(new_pos);
 
-    bool collided = !GameManager::get().can_pass(new_grid_pos, {this});
+    bool collided = !_game.can_pass(new_grid_pos, {this});
     set_pos(new_pos);
     processed = true;
     if (collided) {
-        GameManager::get().kill(*this, new_grid_pos);
+        _game.kill(*this, new_grid_pos);
     }
 }
 
@@ -59,7 +59,7 @@ char display_delta(Point<T> delta) {
     return '-';
 }
 
-void Missile::render() {
+void Missile::render() const {
     auto theme = COLOR_PAIR(102);
     if (is_danger_theme()) {
         theme = COLOR_PAIR(202);
@@ -71,12 +71,12 @@ void Missile::render() {
             mvaddch(draw_pos.y(), draw_pos.x(), display_delta(delta) | theme);
         }
     } else {
-        mvaddch(grid_pos().y(), grid_pos().x(), display_delta(_velocity) | theme);
+        mvaddch(grid_pos().y(), grid_pos().x(), display_delta(velocity()) | theme);
     }
 }
 
 void Missile::direct_velocity(const PointF& direction) {
-    _velocity = direction.norm() * MISSILE_SPEED;
+    set_velocity(direction.norm() * MISSILE_SPEED);
 }
 
 void Missile::set_pos(const PointF& new_pos) {
@@ -92,3 +92,5 @@ void Missile::set_grid_pos(const PointI& new_pos) {
     }
     GameObject::set_grid_pos(new_pos);
 }
+
+Missile::Missile(GameScreen& game_screen) : GameObject(game_screen), Renderable(game_screen) {}
