@@ -15,6 +15,7 @@ public:
 
     void add_renderable(Renderable* object);
     void remove_renderable(Renderable* object);
+    void fill_bg(PointI pos = {}, float range = -1) const;
 
     virtual void process(float elapsed) = 0;
     virtual void render() const;

@@ -5,15 +5,18 @@
 
 class Enemy : public GameObject, public Renderable {
 public:
-    Enemy(GameScreen& game_screen, float damage, char type);
+    Enemy(GameScreen& game_screen, int damage, int hp, char type);
 
     void process(float elapsed) override;
     void render() const override;
-    float damage() const;
+    int damage() const;
+    int health_points() const;
     bool can_act() const;
+    void take_damage(int damage);
 
 private:
     float _hit_elapsed = 0;
-    float _damage;
+    int _damage;
+    int _health_points;
     char _type;
 };

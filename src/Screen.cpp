@@ -23,12 +23,18 @@ void Screen::remove_renderable(Renderable* object) {
     }
 }
 
-void Screen::render() const {
+void Screen::fill_bg(PointI pos, float range) const {
+    float range2 = range*range;
     for (int x = left(); x < right(); ++x) {
         for (int y = top(); y < bottom(); ++y) {
-            mvaddch(y, x, _bg_sing);
+            if (range < 0 || dist2(pos, {x, y}) <= range2) {
+                mvaddch(y, x, _bg_sing);
+            }
         }
     }
+}
+
+void Screen::render() const {
     for (const auto& renderable : _renderables) {
         renderable->render();
     }

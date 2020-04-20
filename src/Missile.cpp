@@ -20,19 +20,16 @@ void Missile::process(float elapsed) {
     for (PointI delta : deltas) {
         check_pos += delta;
         count += 1;
-        if (check_pos == _game.player_pos()) {
-            continue;  // TODO: use game object tags to check collision with
-        }
-        bool collided = !_game.can_pass(check_pos, {this});
+        bool collided = !_game.can_pass(check_pos, ENEMY_FLAG);
         if (collided) {
-            _game.kill(*this, check_pos);
+            _game.damage_enemy(*this, check_pos);
             new_pos = pos() + elapsed * count / deltas.size() * velocity();
             break;
         }
     }
 
     set_pos(new_pos);
-    processed = true;
+    _processed = true;
 }
 
 std::vector<PointI> generate_deltas(PointF from, PointF to) {
@@ -80,7 +77,7 @@ void Missile::render() const {
         theme = COLOR_PAIR(202);
     }
     PointI draw_pos = grid_round(_old_pos);
-    if (processed && draw_pos != grid_pos()) {
+    if (_processed && draw_pos != grid_pos()) {
         for (PointI delta : generate_deltas(_old_pos, pos())) {
             draw_pos += delta;
             mvaddch(draw_pos.y(), draw_pos.x(), display_delta(delta) | theme);
@@ -108,4 +105,12 @@ void Missile::set_grid_pos(const PointI& new_pos) {
     GameObject::set_grid_pos(new_pos);
 }
 
-Missile::Missile(GameScreen& game_screen) : GameObject(game_screen), Renderable(game_screen) {}
+int Missile::damage() const {
+    return _damage;
+}
+
+Missile::Missile(GameScreen& game_screen, int damage)
+    : GameObject(game_screen), Renderable(game_screen), _damage(damage)
+{
+    add_flags(MISSILE_FLAG);
+}

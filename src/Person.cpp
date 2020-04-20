@@ -47,20 +47,33 @@ void Person::render() const {
         theme = COLOR_PAIR(203);
     }
     mvaddch(grid_round(pos().y()), grid_round(pos().x()), '@' | theme);
-    RenderManager::get().display_hp((int)_heal_points);
 }
 
-void Person::take_damage(float damage) {
-    _heal_points -= damage;
+void Person::take_damage(int damage) {
+    _health_points -= damage;
     _was_damaged = true;
+}
+
+void Person::heal(int value) {
+    _health_points += value;
 }
 
 bool Person::was_damaged() const {
     return _was_damaged;
 }
 
-Person::Person(GameScreen& game_screen) : GameObject(game_screen), Renderable(game_screen) {}
+int Person::health_points() const {
+    return _health_points;
+}
+
+Person::Person(GameScreen& game_screen) : GameObject(game_screen), Renderable(game_screen) {
+    add_flags(PLAYER_FLAG);
+}
 
 bool Person::is_alive() const {
-    return _heal_points > 0;
+    return _health_points > 0;
+}
+
+float Person::vision_value() {
+    return _vision_value;
 }

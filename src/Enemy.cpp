@@ -1,7 +1,6 @@
 #include "Enemy.h"
 
 #include "GameScreen.h"
-#include "Person.h"
 #include "utils.hpp"
 
 #include <curses.h>
@@ -26,6 +25,9 @@ void Enemy::process(float elapsed) {
 }
 
 void Enemy::render() const {
+    if (!_visible) {
+        return;
+    }
     auto theme = COLOR_PAIR(101);
     if (is_danger_theme()) {
         theme = COLOR_PAIR(201);
@@ -33,12 +35,24 @@ void Enemy::render() const {
     mvaddch(grid_pos().y(), grid_pos().x(), _type | theme);
 }
 
-float Enemy::damage() const {
+int Enemy::damage() const {
     return _damage;
+}
+
+int Enemy::health_points() const {
+    return _health_points;
 }
 
 bool Enemy::can_act() const {
     return _hit_elapsed > HIT_DELAY;
 }
 
-Enemy::Enemy(GameScreen& game_screen, float damage, char type) : GameObject(game_screen), Renderable(game_screen), _damage(damage), _type(type) {}
+void Enemy::take_damage(int damage) {
+    _health_points -= damage;
+}
+
+Enemy::Enemy(GameScreen& game_screen, int damage, int hp, char type)
+    : GameObject(game_screen), Renderable(game_screen), _damage(damage), _health_points(hp), _type(type)
+{
+    add_flags(ENEMY_FLAG);
+}

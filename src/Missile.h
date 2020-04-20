@@ -5,7 +5,7 @@
 
 class Missile : public GameObject, public Renderable {
 public:
-    explicit Missile(GameScreen& game_screen);
+    Missile(GameScreen& game_screen, int damage);
 
     void process(float elapsed) override;
 
@@ -15,8 +15,10 @@ public:
     void render() const override;
 
     void direct_velocity(const PointF& direction);
+    int damage() const;
 
 private:
     PointF _old_pos;
-    bool processed = false;
+    bool _processed = false;
+    int _damage;
 };

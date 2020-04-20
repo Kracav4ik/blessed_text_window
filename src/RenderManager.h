@@ -10,8 +10,6 @@ public:
     void restore();
     void danger();
 
-    void display_hp(int hp) const;
-
     bool is_danger_theme() const;
 
 private:

@@ -11,8 +11,12 @@ set(EXE_SOURCES
         GameOverScreen.h
         GameScreen.cpp
         GameScreen.h
+        HUD.cpp
+        HUD.h
         InputManager.cpp
         InputManager.h
+        Item.cpp
+        Item.h
         main.cpp
         Missile.cpp
         Missile.h

@@ -11,13 +11,17 @@ public:
 
     void render() const override;
 
-    void take_damage(float damage);
+    void take_damage(int damage);
+    void heal(int value);
     bool was_damaged() const;
+    int health_points() const;
 
     bool is_alive() const;
+    float vision_value();
 
 private:
     float _shot_elapsed = 0;
-    float _heal_points = 100;
+    int _health_points = 100;
     bool _was_damaged = false;
+    float _vision_value = 10;
 };
