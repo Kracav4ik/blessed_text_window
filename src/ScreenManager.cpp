@@ -1,6 +1,8 @@
 #include "ScreenManager.h"
 #include "GameScreen.h"
 #include "GameOverScreen.h"
+#include "utils.hpp"
+
 #include <curses.h>
 
 void ScreenManager::init() {

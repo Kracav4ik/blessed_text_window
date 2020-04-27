@@ -38,4 +38,27 @@ set(EXE_SOURCES
         utils.hpp
 )
 
+if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
+    set(EXE_SOURCES
+            ${EXE_SOURCES}
+
+            pdcurses-emscripten/pdcdisp.c
+            pdcurses-emscripten/pdcgetsc.c
+            pdcurses-emscripten/pdckbd.c
+            pdcurses-emscripten/pdcscrn.c
+            pdcurses-emscripten/pdcsetsc.c
+            pdcurses-emscripten/pdcutil.c
+    )
+endif()
+
 add_executable(${EXE_NAME} ${EXE_SOURCES})
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
+    set_target_properties(${EXE_NAME} PROPERTIES LINK_FLAGS "-s EXPORTED_FUNCTIONS=[_main,_keydown_handler,_keyup_handler,_mouse_down_handler,_mouse_up_handler,_mouse_move_handler] -s EXTRA_EXPORTED_RUNTIME_METHODS=[cwrap] -s LLD_REPORT_UNDEFINED")
+
+    add_custom_target(copy-html-src ALL
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/src-html ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+    )
+    add_dependencies(${EXE_NAME} copy-html-src)
+endif()

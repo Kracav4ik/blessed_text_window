@@ -3,6 +3,7 @@
 #include "ScreenManager.h"
 #include "ObjectManager.hpp"
 #include "Renderable.h"
+#include "utils.hpp"
 
 #include <curses.h>
 

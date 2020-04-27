@@ -18,6 +18,10 @@ public:
     bool is_right_pressed() const;
     bool is_key_pressed(char key) const;
 
+    void process_key(uint8_t key, bool pressed);
+    void set_mouse_button_state(bool left_pressed, bool right_pressed);
+    void set_mouse_pos(int x, int y);
+
 private:
     PointI _mouse_pos;
     bool _left_pressed = false;

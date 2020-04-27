@@ -54,16 +54,22 @@ set(PDCURSES_LIB
         pdcurses/keyname.c
         pdcurses/panel.c
         pdcurses/scroll.c
-
-        wincon/pdcgetsc.c
-        wincon/pdcsetsc.c
-        wincon/pdcclip.c
-        wincon/pdckbd.c
-        wincon/pdcutil.c
-        wincon/pdcdisp.c
-        wincon/pdcscrn.c
-        wincon/pdcwin.h
 )
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    set(PDCURSES_LIB
+            ${PDCURSES_LIB}
+
+            wincon/pdcgetsc.c
+            wincon/pdcsetsc.c
+            wincon/pdcclip.c
+            wincon/pdckbd.c
+            wincon/pdcutil.c
+            wincon/pdcdisp.c
+            wincon/pdcscrn.c
+            wincon/pdcwin.h
+    )
+endif()
 
 add_library(pdcurses_lib ${PDCURSES_LIB})
 target_link_libraries(${EXE_NAME} pdcurses_lib)

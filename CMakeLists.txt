@@ -3,7 +3,11 @@ project(blessed_text_window)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
+if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin-html")
+else()
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
+endif()
 
 include_directories(src)
 include_directories(thirdparty/PDCurses-3.8)
